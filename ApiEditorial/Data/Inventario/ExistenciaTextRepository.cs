@@ -20,12 +20,9 @@ namespace ApiEditorial.Data.Inventario
         {
             if (personal.Existencia!= null)
             {
-                if (personal.Existencia!= null)
+                foreach (var item in personal.Existencia)   
                 {
-                    foreach (var item in personal.Existencia)
-                    {
-                        await InsertarExistencia(item.IdLibros, item.IdPersonal, item.TotalLibrosEntregados);
-                    }
+                    await InsertarExistencia(item.IdLibros, item.IdPersonal, item.TotalLibrosPedidos);
                 }
             }
         }
@@ -35,10 +32,11 @@ namespace ApiEditorial.Data.Inventario
             {
                 using (SqlCommand cmd=new SqlCommand("sp_insertar_ExistenciaTextos",sql))
                 {
+                    
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("IdPersonal", IdPersonal));
-                    cmd.Parameters.Add(new SqlParameter("IdLibros", IdLibros));
-                    cmd.Parameters.Add(new SqlParameter("TotalLibrosEntregados", TotalLibrosEntregados));
+                    cmd.Parameters.Add(new SqlParameter("@IdPersonal",IdPersonal));
+                    cmd.Parameters.Add(new SqlParameter("IdLibros", IdLibros)); 
+                    cmd.Parameters.Add(new SqlParameter("TotalLibrosPedidos", TotalLibrosEntregados));
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
                     return;
@@ -59,6 +57,9 @@ namespace ApiEditorial.Data.Inventario
                         cmd.Parameters.Add(new SqlParameter("IdPersonal", valor.IdPersonal));
                         cmd.Parameters.Add(new SqlParameter("NumPedido", valor.NumPedido));
                         cmd.Parameters.Add(new SqlParameter("Cantidadtotal", valor.CantidadTotal));
+                        cmd.Parameters.Add(new SqlParameter("Motivo",valor.Motivo));
+                        cmd.Parameters.Add(new SqlParameter("Destino", valor.Destino));
+
                         await sql.OpenAsync();
                         await cmd.ExecuteNonQueryAsync();
 
@@ -93,7 +94,6 @@ namespace ApiEditorial.Data.Inventario
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("IdLibros", IdLibro));
-                    cmd.Parameters.Add(new SqlParameter("IdExTextos", IdExTextos));
                     cmd.Parameters.Add(new SqlParameter("Cantidad", Cantidad));
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
