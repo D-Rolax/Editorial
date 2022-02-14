@@ -1,4 +1,5 @@
 ﻿using ApiEditorial.Models.Inventario;
+using ApiEditorial.Models.Usuarios;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -15,16 +16,29 @@ namespace ApiEditorial.Data.Inventario
         {
             _connectionString = configuration.GetConnectionString("cn");
         }
-        public async Task Insert(ExistenciaText valor)
+        public async Task NuevaExistencia(Personal personal)
+        {
+            if (personal.Existencia!= null)
+            {
+                if (personal.Existencia!= null)
+                {
+                    foreach (var item in personal.Existencia)
+                    {
+                        await InsertarExistencia(item.IdLibros, item.IdPersonal, item.TotalLibrosEntregados);
+                    }
+                }
+            }
+        }
+        public async Task InsertarExistencia(int IdLibros,int IdPersonal,int TotalLibrosEntregados)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {
                 using (SqlCommand cmd=new SqlCommand("sp_insertar_ExistenciaTextos",sql))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("IdPersonal", valor.IdLibros));
-                    cmd.Parameters.Add(new SqlParameter("IdLibros", valor.IdPersonal));
-                    cmd.Parameters.Add(new SqlParameter("TotalLibrosEntregados", valor.TotalLibrosEntregados));
+                    cmd.Parameters.Add(new SqlParameter("IdPersonal", IdPersonal));
+                    cmd.Parameters.Add(new SqlParameter("IdLibros", IdLibros));
+                    cmd.Parameters.Add(new SqlParameter("TotalLibrosEntregados", TotalLibrosEntregados));
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
                     return;
@@ -56,7 +70,7 @@ namespace ApiEditorial.Data.Inventario
                         {
                             foreach (var item in valor.detallePedidos)
                             {
-                                await insertDetalle(item.IdPedidos, item.IdExTextos, item.Cantidad);
+                                await insertDetalle(item.IdLibro, item.IdExTextos, item.Cantidad);
 
                             }
                         }
@@ -71,14 +85,14 @@ namespace ApiEditorial.Data.Inventario
             }
         }
 
-        public async Task insertDetalle(int IdPedidos,int IdExTextos,int Cantidad)
+        public async Task insertDetalle(int IdLibro,int IdExTextos,int Cantidad)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {
                 using (SqlCommand cmd = new SqlCommand("spInsertarDetallePedido", sql))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("IdPedidos", IdPedidos));
+                    cmd.Parameters.Add(new SqlParameter("IdLibros", IdLibro));
                     cmd.Parameters.Add(new SqlParameter("IdExTextos", IdExTextos));
                     cmd.Parameters.Add(new SqlParameter("Cantidad", Cantidad));
                     await sql.OpenAsync();

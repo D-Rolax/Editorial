@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ApiEditorial.Models.Inventario;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,5 +17,6 @@ namespace ApiEditorial.Models.Usuarios
         public DateTime FechaIngreso { get; set; }
         public DateTime FechaRegistro { get; set; }
         public bool Estado { get; set; }
+        public List<ExistenciaText> Existencia{ get; set; }
     }
 }

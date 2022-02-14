@@ -1,5 +1,6 @@
 ﻿using ApiEditorial.Data.Inventario;
 using ApiEditorial.Models.Inventario;
+using ApiEditorial.Models.Usuarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,9 +21,9 @@ namespace ApiEditorial.Controllers.Inventario
             this.repository = repository?? throw new ArgumentException(nameof(repository));
         }
         [HttpPost]
-        public async Task post([FromBody]ExistenciaText existencia)
+        public async Task post([FromBody]Personal personal)
         {
-            await repository.Insert(existencia);
+            await repository.NuevaExistencia(personal);
         }
         [HttpPut]
         public async Task put([FromBody] Pedidos pedidos)

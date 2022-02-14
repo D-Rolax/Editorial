@@ -39,5 +39,10 @@ namespace ApiEditorial.Controllers
         {
             await _repository.Insert(libros);
         }
+        [HttpPut]
+        public async Task Put([FromBody] Libros libros)
+        {
+            await _repository.update(libros);
+        }
     }
 }

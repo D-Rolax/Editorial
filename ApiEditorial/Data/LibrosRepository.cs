@@ -82,16 +82,27 @@ namespace ApiEditorial.Data
             };
         }
 
-        //public Task<Libros> GetById()
-        //{
-        //    using (SqlConnection sql=new SqlConnection(_connectionString))
-        //    {
-        //        using(SqlCommand cmd= new SqlCommand("",sql))
-        //        {
-
-        //        }
-        //    }
-        //}
+        public async Task update (Libros libros)
+        {
+            using (SqlConnection sql=new SqlConnection(_connectionString))
+            {
+                using(SqlCommand cmd= new SqlCommand("sp_actualizar_libros", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdLibros", libros.IdLibros));
+                    cmd.Parameters.Add(new SqlParameter("Nombre", libros.Nombre));
+                    cmd.Parameters.Add(new SqlParameter("Nivel",libros.Nivel));
+                    cmd.Parameters.Add(new SqlParameter("PrecioU", libros.PrecioU));
+                    cmd.Parameters.Add(new SqlParameter("PrecioM", libros.PrecioM));
+                    cmd.Parameters.Add(new SqlParameter("PrecioR", libros.PrecioR));
+                    cmd.Parameters.Add(new SqlParameter("Descripcion", libros.Descripcion));
+                    cmd.Parameters.Add(new SqlParameter("Estado", libros.Estado));
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    return;
+                }
+            }
+        }
         public async Task Insert(Libros libros)
         {
             using(SqlConnection sql=new SqlConnection(_connectionString))

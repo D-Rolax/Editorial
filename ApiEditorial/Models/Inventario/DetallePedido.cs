@@ -9,6 +9,7 @@ namespace ApiEditorial.Models.Inventario
     {
         public int IdPedidos{ get; set; }
         public int IdExTextos{ get; set; }
+        public int IdLibro { get; set; }
         public int Cantidad { get; set; }
     }
 }
