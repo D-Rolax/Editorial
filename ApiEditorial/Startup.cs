@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using ApiEditorial.Data;
 using ApiEditorial.Data.Inventario;
 using ApiEditorial.Data.Usuarios;
+using ApiEditorial.Data.Operaciones.Promotores;
 
 namespace ApiEditorial
 {
@@ -36,6 +37,7 @@ namespace ApiEditorial
                 services.AddScoped<CargoRepository>();
                 services.AddScoped<PersonalRepository>();
                 services.AddScoped<ExistenciaTextRepository>();
+            services.AddScoped<DetallePedidoRepository>();
 
                 services.AddCors(options =>
                 {

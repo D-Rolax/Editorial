@@ -1,5 +1,4 @@
 ﻿using ApiEditorial.Data;
-using ApiEditorial.Data.Enties;
 using ApiEditorial.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

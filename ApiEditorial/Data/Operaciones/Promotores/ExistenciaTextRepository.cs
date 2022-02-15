@@ -1,4 +1,5 @@
-﻿using ApiEditorial.Models.Inventario;
+﻿using ApiEditorial.Models;
+using ApiEditorial.Models.Inventario;
 using ApiEditorial.Models.Usuarios;
 using Microsoft.Extensions.Configuration;
 using System;
@@ -43,7 +44,6 @@ namespace ApiEditorial.Data.Inventario
                 }
             }
         }
-
         public async Task Pedidos(Pedidos valor)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
@@ -57,7 +57,7 @@ namespace ApiEditorial.Data.Inventario
                         cmd.Parameters.Add(new SqlParameter("IdPersonal", valor.IdPersonal));
                         cmd.Parameters.Add(new SqlParameter("NumPedido", valor.NumPedido));
                         cmd.Parameters.Add(new SqlParameter("Cantidadtotal", valor.CantidadTotal));
-                        cmd.Parameters.Add(new SqlParameter("Motivo",valor.Motivo));
+                        cmd.Parameters.Add(new SqlParameter("Motivo", valor.Motivo));
                         cmd.Parameters.Add(new SqlParameter("Destino", valor.Destino));
 
                         await sql.OpenAsync();
@@ -65,9 +65,9 @@ namespace ApiEditorial.Data.Inventario
 
                         result = 1;
                     }
-                    if(result==1)
+                    if (result == 1)
                     {
-                        if (valor.detallePedidos!=null)
+                        if (valor.detallePedidos != null)
                         {
                             foreach (var item in valor.detallePedidos)
                             {
@@ -85,8 +85,7 @@ namespace ApiEditorial.Data.Inventario
 
             }
         }
-
-        public async Task insertDetalle(int IdLibro,int IdExTextos,int Cantidad)
+        public async Task insertDetalle(int IdLibro, int IdExTextos, int Cantidad)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {
@@ -101,5 +100,61 @@ namespace ApiEditorial.Data.Inventario
                 }
             }
         }
+        //public async Task<List<Pedidos>> MostrarPedidoS()
+        //{
+        //    using (SqlConnection sql = new SqlConnection(_connectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand("sp_Mostrar_Pedidos", sql))
+        //        {
+        //            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //            var response = new List<Pedidos>();
+        //            await sql.OpenAsync();
+
+        //            using (var reader = await cmd.ExecuteReaderAsync())
+        //            {
+        //                while (await reader.ReadAsync())
+        //                {
+        //                    response.Add(ListaPedidos(reader));
+        //                }
+        //            }
+        //            return response;
+        //        }
+        //    }
+        //}
+        //public async Task<List<Pedidos>> MostrarPedido(int Id)
+        //{
+        //    using (SqlConnection sql = new SqlConnection(_connectionString))
+        //    {
+        //        using (SqlCommand cmd = new SqlCommand("sp_Mostrar_Pedido", sql))
+        //        {
+        //            cmd.CommandType = System.Data.CommandType.StoredProcedure;
+        //            cmd.Parameters.Add(new SqlParameter("IdPersonal", Id));
+        //            var response = new List<Pedidos>();
+        //            await sql.OpenAsync();
+
+        //            using (var reader = await cmd.ExecuteReaderAsync())
+        //            {
+        //                while (await reader.ReadAsync())
+        //                {
+        //                    response.Add(ListaPedidos(reader));
+        //                }
+        //            }
+        //            return response;
+        //        }
+        //    }
+        //}
+
+        //private Pedidos ListaPedidos(SqlDataReader reader)
+        //{
+        //    return new Pedidos()
+        //    {
+        //        IdPedDev = (int)reader["IdPedDev"],
+        //        IdPersonal = (int)reader["IdPersonal"],
+        //        NumPedido = (int)reader["NumPedido"],
+        //        FechaRegistro = (DateTime)reader["FechaRegistro"],
+        //        Estado = reader["Estado"].ToString(),
+        //    };
+        //}
+
     }
 }
