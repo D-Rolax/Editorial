@@ -71,7 +71,7 @@ namespace ApiEditorial.Data.Inventario
                         {
                             foreach (var item in valor.detallePedidos)
                             {
-                                await insertDetalle(item.IdLibro, item.IdExTextos, item.Cantidad);
+                                await insertDetalle(item.IdLibro, item.Cantidad);
 
                             }
                         }
@@ -85,7 +85,7 @@ namespace ApiEditorial.Data.Inventario
 
             }
         }
-        public async Task insertDetalle(int IdLibro, int IdExTextos, int Cantidad)
+        public async Task insertDetalle(int IdLibro, int Cantidad)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {

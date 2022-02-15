@@ -7,15 +7,22 @@ namespace ApiEditorial.Models
 {
     public class ListaDetallePedido
     {
-        public int IdPedDev { get; set; }
-        public int IdPersonal { get; set; }
-        public string NombreCompleto { get; set; }
-        public int NumPedido { get; set; }
-        public DateTime FechaRegistro { get; set; }
-        public string Estado { get; set; }
-        public string Nombre { get; set; }
+        public int IdPedidos { get; set; }
+        public int IdLibro { get; set; }
         public int Cantidad { get; set; }
-        public string Criterio { get; set; }
-        public string Atributo { get; set; }
+        public int CantRecibida { get; set; }
+        public string nombreDescripcion { get; set; }
+    }
+    public class ListarPedidos
+    {
+        public int IdPedidos { get; set; }
+        public int IdPersonal { get; set; }
+        public int NumPedido { get; set; }
+        public int CantidadTotal { get; set; }
+        public int TotalRecibidos { get; set; }
+        public DateTime FechaRegistro { get; set; }
+        public string Motivo { get; set; }
+        public string Destino { get; set; }
+        public string Estado { get; set; }
     }
 }

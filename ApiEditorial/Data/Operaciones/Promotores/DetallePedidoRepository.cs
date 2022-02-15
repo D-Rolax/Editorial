@@ -17,68 +17,78 @@ namespace ApiEditorial.Data.Operaciones.Promotores
         {
             this._connectionString = configuration.GetConnectionString("cn");
         }
-
-
-
-        public async Task<List<ListaDetallePedido>> DetallePedido(int Id)
+        public async Task<List<ListaDetallePedido>> ListaDetallePedido(int idPedidos)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {
-                var Criterio="pedidos";
-                using (SqlCommand cmd = new SqlCommand("spMostrarDetallePedidos", sql))
+                using (SqlCommand cmd = new SqlCommand("sp_listarDetallePedidos", sql))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("Criterio", Criterio));
-                    cmd.Parameters.Add(new SqlParameter("Atributo", Id));
+                    cmd.Parameters.Add(new SqlParameter("IdPedidos", idPedidos));
                     var response = new List<ListaDetallePedido>();
                     await sql.OpenAsync();
 
-                    if (Criterio == "todos" || Criterio == "Personal")
+                    using (var reader = await cmd.ExecuteReaderAsync())
                     {
-                        using (var reader = await cmd.ExecuteReaderAsync())
+                        while (await reader.ReadAsync())
                         {
-                            while (await reader.ReadAsync())
-                            {
-                                response.Add(ListaPedido(reader));
-                            }
-                        }
-                    }
-                    else if (Criterio=="Pedido")
-                    {
-                        using (var reader = await cmd.ExecuteReaderAsync())
-                        {
-                            while (await reader.ReadAsync())
-                            {
-                                response.Add(ListaDetalle(reader));
-                            }
+                            response.Add(AgregarDetallePedido(reader));
                         }
                     }
                     return response;
                 }
             }
         }
-        private ListaDetallePedido ListaDetalle(SqlDataReader reader)
+        private ListaDetallePedido AgregarDetallePedido(SqlDataReader reader)
         {
             return new ListaDetallePedido()
             {
-                IdPedDev = (int)reader["IdPedDev"],
-                IdPersonal = (int)reader["IdPersonal"],
-                NumPedido = (int)reader["NumPedido"],
-                Nombre = reader["Nombre"].ToString(),
+                IdPedidos = (int)reader["IdPedidos"],
+                IdLibro = (int)reader["IdLibro"],
+                CantRecibida = (int)reader["CantRecibida"],
                 Cantidad = (int)reader["Cantidad"],
+                nombreDescripcion=(string)reader["nombreDescripcion"].ToString()
             };
         }
-        private ListaDetallePedido ListaPedido(SqlDataReader reader)
+        public async Task<List<ListarPedidos>> ListarPedidos(int idPersonal)
         {
-            return new ListaDetallePedido()
+            using (SqlConnection sql = new SqlConnection(_connectionString))
             {
-                IdPedDev = (int)reader["IdPedDev"],
+                using (SqlCommand cmd = new SqlCommand("sp_listarPedidos", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("idPersonal", idPersonal));
+                    var response = new List<ListarPedidos>();
+                    await sql.OpenAsync();
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            response.Add(AgregarPedido(reader));
+                        }
+                    }
+                    return response;
+                }
+            }
+        }
+        private ListarPedidos AgregarPedido(SqlDataReader reader)
+        {
+            return new ListarPedidos()
+            {
+                IdPedidos = (int)reader["IdPedidos"],
                 IdPersonal = (int)reader["IdPersonal"],
-                NombreCompleto=reader["NombreCompleto"].ToString(),
+                
                 NumPedido = (int)reader["NumPedido"],
+                CantidadTotal = (int)reader["CantidadTotal"],
+                TotalRecibidos = (int)reader["TotalRecibidos"],
                 FechaRegistro = (DateTime)reader["FechaRegistro"],
-                Estado = reader["Cantidad"].ToString(),
+                Motivo = reader["Motivo"].ToString(),
+                Destino = reader["Destino"].ToString(),
+                Estado = reader["Estado"].ToString(),
             };
         }
+       
+      
     }
 }

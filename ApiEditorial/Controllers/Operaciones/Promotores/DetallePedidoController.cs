@@ -20,19 +20,24 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
         {
             this.repository = repository ?? throw new ArgumentException(nameof(repository));
         }
-        [HttpGet("{Id}")]
-        public async Task<List<ListaDetallePedido>> DetallePedido(int Id)
+        [HttpGet]
+        [Route("ListarPedidos/{Id}")]
+        public async Task<List<ListarPedidos>> ListarPedidos(int Id)
         {
-            var response = await repository.DetallePedido(Id);
+            var response = await repository.ListarPedidos(Id);
             if (response == null) { NotFound(); }
             return response;
         }
-        //[HttpGet("{Id}")]
-        //public async Task<List<ListaDetallePedido>> DetallePedido(int Id)
-        //{
-        //    var response = await repository.DetallePedido(Id);
-        //    if (response == null) { NotFound(); }
-        //    return response;
-        //}
+        [HttpGet]
+        //[Route("RecibirDatosAnimales/{CodR_Animal}")]
+        [Route("ListarDetallePedidos/{idPedidos}")]
+        public async Task<List<ListaDetallePedido>> ListarDetallePedidos(int idPedidos)
+        {
+            var response =  await repository.ListaDetallePedido(idPedidos);
+            if (response == null) { NotFound(); }
+            return response;
+            //await repository.Pedidos(pedidos);
+        }
+   
     }
 }

@@ -28,8 +28,8 @@ namespace ApiEditorial.Controllers.Inventario
         }
 
         [HttpPost]
-        [Route("RegistrarExistencia")]
-        public async Task put([FromBody] Pedidos pedidos)
+        [Route("RegistrarPedidos")]
+        public async Task RegistrarPedidos([FromBody] Pedidos pedidos)
         {
             await repository.Pedidos(pedidos);
         }
