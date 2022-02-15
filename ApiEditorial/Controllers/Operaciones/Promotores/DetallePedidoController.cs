@@ -1,6 +1,7 @@
 ﻿using ApiEditorial.Data.Inventario;
 using ApiEditorial.Data.Operaciones.Promotores;
 using ApiEditorial.Models;
+using ApiEditorial.Models.Inventario;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,6 +21,13 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
         {
             this.repository = repository ?? throw new ArgumentException(nameof(repository));
         }
+        [HttpPost]
+        [Route("ConfirmarPedido")]
+        public async Task ConfirmarPedido([FromBody] ConfirmarPedido pedidos)
+        {
+            await repository.ConfirmarPedido(pedidos);
+        }
+
         [HttpGet]
         [Route("ListarPedidos/{Id}")]
         public async Task<List<ListarPedidos>> ListarPedidos(int Id)

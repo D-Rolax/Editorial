@@ -7,6 +7,7 @@ namespace ApiEditorial.Models
 {
     public class ListaDetallePedido
     {
+        public int idDetallePedido { get; set; }
         public int IdPedidos { get; set; }
         public int IdLibro { get; set; }
         public int Cantidad { get; set; }

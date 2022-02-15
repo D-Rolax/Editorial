@@ -17,6 +17,63 @@ namespace ApiEditorial.Data.Operaciones.Promotores
         {
             this._connectionString = configuration.GetConnectionString("cn");
         }
+        public async Task ConfirmarPedido(ConfirmarPedido valor)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+
+                try
+                {
+                    int resultado = 0;    //bool resultado = false;
+                    using (SqlCommand cmd = new SqlCommand("sp_ConfirmarPedido", sql))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("IdPedido", valor.IdPedido));
+                        cmd.Parameters.Add(new SqlParameter("Estado", valor.Estado));
+                        //cmd.Parameters.Add(new SqlParameter("@cantidaItems", valor.cantidadItem));
+                        await sql.OpenAsync();
+                        await cmd.ExecuteNonQueryAsync();
+
+                        resultado = 1;
+                    }
+
+                    if (resultado == 1)
+                    {
+                        if (valor.ConfirmarDetallePedido != null)
+                        {
+
+                            foreach (var item in valor.ConfirmarDetallePedido)
+                            {
+                                await ConfirmarDetallePedido(item.idDetallePedido, item.idLibro,item.cantidadRecibida);
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+
+
+            }
+        }
+
+        public async Task ConfirmarDetallePedido(int idDetallePedido, int idLibro,int cantidadRecibida)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_ConfirmarDetallePedido", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("idDetallePedido", idDetallePedido));
+                    cmd.Parameters.Add(new SqlParameter("idLibro", idLibro));
+                    cmd.Parameters.Add(new SqlParameter("cantidadRecibida", cantidadRecibida));
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    return;
+                }
+            }
+        }
         public async Task<List<ListaDetallePedido>> ListaDetallePedido(int idPedidos)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
@@ -43,6 +100,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
         {
             return new ListaDetallePedido()
             {
+                idDetallePedido = (int)reader["idDetallePedido"],
                 IdPedidos = (int)reader["IdPedidos"],
                 IdLibro = (int)reader["IdLibro"],
                 CantRecibida = (int)reader["CantRecibida"],
