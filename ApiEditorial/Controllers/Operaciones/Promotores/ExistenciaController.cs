@@ -33,25 +33,12 @@ namespace ApiEditorial.Controllers.Inventario
         {
             await repository.Pedidos(pedidos);
         }
-        //[HttpGet]
-        //public async Task<List<Pedidos>> ListarAlmacen()
-        //{
-        //    return await repository.MostrarPedidoS();
-        //}
-        //[HttpGet("{Id}")]
-        //public async Task<List<Pedidos>> ListarPedidos(int Id)
-        //{
-        //    var response = await repository.MostrarPedido(Id);
-        //    if (response == null) { NotFound(); }
-        //    return response;
-        //}
-
-        //[HttpGet("{IdPersonal}")]
-        //public async Task<ActionResult<Pedidos>> ListarPedidos(int IdPersonal)
-        //{
-        //    var response = await repository.MostrarPedidosId(IdPersonal);
-        //    if (response == null) { return NotFound(); }
-        //    return response;
-        //}
+        [HttpGet("{Id}")]
+        public async Task<List<ExistenciaText>>Mostrar(int Id)
+        {
+            var response = await repository.MostrarExistencia(Id);
+            if (response == null) { NotFound(); }
+            return response;
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace ApiEditorial.Data.Inventario
             {
                 foreach (var item in personal.Existencia)   
                 {
-                    await InsertarExistencia(item.IdLibros, item.IdPersonal, item.TotalLibrosPedidos);
+                    await InsertarExistencia(item.IdLibros, item.IdPersonal, item.LibrosRecibidos);
                 }
             }
         }
@@ -100,61 +100,43 @@ namespace ApiEditorial.Data.Inventario
                 }
             }
         }
-        //public async Task<List<Pedidos>> MostrarPedidoS()
-        //{
-        //    using (SqlConnection sql = new SqlConnection(_connectionString))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand("sp_Mostrar_Pedidos", sql))
-        //        {
-        //            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //            var response = new List<Pedidos>();
-        //            await sql.OpenAsync();
+        public async Task<List<ExistenciaText>>MostrarExistencia(int Id)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using(SqlCommand cmd= new SqlCommand("sp_Mostrar_Existencia",sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdPersonal", Id));
+                    var response = new List<ExistenciaText>();
+                    await sql.OpenAsync();
 
-        //            using (var reader = await cmd.ExecuteReaderAsync())
-        //            {
-        //                while (await reader.ReadAsync())
-        //                {
-        //                    response.Add(ListaPedidos(reader));
-        //                }
-        //            }
-        //            return response;
-        //        }
-        //    }
-        //}
-        //public async Task<List<Pedidos>> MostrarPedido(int Id)
-        //{
-        //    using (SqlConnection sql = new SqlConnection(_connectionString))
-        //    {
-        //        using (SqlCommand cmd = new SqlCommand("sp_Mostrar_Pedido", sql))
-        //        {
-        //            cmd.CommandType = System.Data.CommandType.StoredProcedure;
-        //            cmd.Parameters.Add(new SqlParameter("IdPersonal", Id));
-        //            var response = new List<Pedidos>();
-        //            await sql.OpenAsync();
+                    using(var reader=await cmd.ExecuteReaderAsync())
+                    {
+                        while(await reader.ReadAsync())
+                        {
+                            response.Add(ListarExistencia(reader));
+                        }
+                    }
+                    return response;
+                }
+            }
+        }
 
-        //            using (var reader = await cmd.ExecuteReaderAsync())
-        //            {
-        //                while (await reader.ReadAsync())
-        //                {
-        //                    response.Add(ListaPedidos(reader));
-        //                }
-        //            }
-        //            return response;
-        //        }
-        //    }
-        //}
-
-        //private Pedidos ListaPedidos(SqlDataReader reader)
-        //{
-        //    return new Pedidos()
-        //    {
-        //        IdPedDev = (int)reader["IdPedDev"],
-        //        IdPersonal = (int)reader["IdPersonal"],
-        //        NumPedido = (int)reader["NumPedido"],
-        //        FechaRegistro = (DateTime)reader["FechaRegistro"],
-        //        Estado = reader["Estado"].ToString(),
-        //    };
-        //}
-
+        private ExistenciaText ListarExistencia(SqlDataReader reader)
+        {
+            return new ExistenciaText()
+            {
+                IdExistenciaTex = (int)reader["IdExistenciaTex"],
+                IdLibros = (int)reader["IdLibros"],
+                NombreDescripcion = reader["NombreDescripcion"].ToString(),
+                LibrosRecibidos = (int)reader["LibrosRecibidos"],
+                LibrosDevueltos = (int)reader["LibrosDevueltos"],
+                LibrosGuias = (int)reader["LibrosGuias"],
+                DeudaTotal = (decimal)reader["DeudaTotal"],
+                FechaRegistro = (DateTime)reader["FechaRegistro"],
+                Estado = (bool)reader["Estado"],
+            };
+        }
     }
 }
