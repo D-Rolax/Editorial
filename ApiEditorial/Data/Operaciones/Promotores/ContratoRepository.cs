@@ -30,6 +30,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                         cmd.Parameters.Add(new SqlParameter("NumContrato", valor.NumContrato));
                         cmd.Parameters.Add(new SqlParameter("TotalTextos", valor.TotalTextos));
                         cmd.Parameters.Add(new SqlParameter("TotalDeuda", valor.TotalDeuda));
+                        cmd.Parameters.Add(new SqlParameter("Estado", valor.Estado));
                         await sql.OpenAsync();
                         await cmd.ExecuteNonQueryAsync();
                         result = 1;
@@ -38,9 +39,20 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     {
                         if (valor.DetalleTextos!= null)
                         {
-                            foreach (var item in valor.DetalleTextos)
+                            if (valor.Estado=="Entregado")
                             {
-                                await insertDetalleTexto(item.IdLibros,item.Cantidad,item.Precio,item.Observaciones);
+                                foreach (var item in valor.DetalleTextos)
+                                {
+                                    await insertDetalleTexto(item.IdLibros, item.Cantidad, item.Precio, item.Observaciones);
+                                    await ConfirmarContrato(valor.IdPersonal, item.IdLibros, item.Cantidad);
+                                }
+                            }
+                            else
+                            {
+                                foreach (var item in valor.DetalleTextos)
+                                {
+                                    await insertDetalleTexto(item.IdLibros, item.Cantidad, item.Precio, item.Observaciones);
+                                }
                             }
                         }
                     }
@@ -65,6 +77,22 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     cmd.Parameters.Add(new SqlParameter("Cantidad", cantidad));
                     cmd.Parameters.Add(new SqlParameter("Precio", precio));
                     cmd.Parameters.Add(new SqlParameter("Observaciones", observaciones));
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    return;
+                }
+            }
+        }
+        private async Task ConfirmarContrato(int idPersonal,int idLibro,int cantidad)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using(SqlCommand cmd=new SqlCommand("sp_confirmar_contrato",sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdPersonal", idPersonal));
+                    cmd.Parameters.Add(new SqlParameter("IdLibros", idLibro));  
+                    cmd.Parameters.Add(new SqlParameter("Cantidad", cantidad));
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
                     return;

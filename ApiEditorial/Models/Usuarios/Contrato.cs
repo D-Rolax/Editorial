@@ -16,7 +16,7 @@ namespace ApiEditorial.Models.Usuarios
         public decimal TotalDeuda { get; set; }
         public decimal Saldo { get; set; }
         public DateTime FechaRegistro { get; set; }
-        public bool Estado { get; set; }
+        public string Estado { get; set; }
         public List<DetalleTextos> DetalleTextos{ get; set; }
     }
 }
