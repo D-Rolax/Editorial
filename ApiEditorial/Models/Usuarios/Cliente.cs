@@ -8,8 +8,10 @@ namespace ApiEditorial.Models.Usuarios
     public class Cliente
     {
         public int IdCliente { get; set; }
-        public int IdColegio { get; set; }
         public string NombreCompleto { get; set; }
+        public int IdColegio { get; set; }
+        public string Colegio { get; set; }
+        public string Zona{ get; set; }
         public string Asugnatura { get; set; }
         public int Celular { get; set; }
         public string Comentario { get; set; }
