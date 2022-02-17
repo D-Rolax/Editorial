@@ -44,7 +44,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
 
                             foreach (var item in valor.ConfirmarDetallePedido)
                             {
-                                await ConfirmarDetallePedido(item.idDetallePedido, item.idLibro,item.cantidadRecibida);
+                                await ConfirmarDetallePedido(item.idDetallePedido, item.idLibro,item.cantidadRecibida,item.idPersonal);
                             }
                         }
                     }
@@ -58,7 +58,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
             }
         }
 
-        public async Task ConfirmarDetallePedido(int idDetallePedido, int idLibro,int cantidadRecibida)
+        public async Task ConfirmarDetallePedido(int idDetallePedido, int idLibro,int cantidadRecibida, int idPersonal)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {
@@ -68,6 +68,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     cmd.Parameters.Add(new SqlParameter("idDetallePedido", idDetallePedido));
                     cmd.Parameters.Add(new SqlParameter("idLibro", idLibro));
                     cmd.Parameters.Add(new SqlParameter("cantidadRecibida", cantidadRecibida));
+                    cmd.Parameters.Add(new SqlParameter("idPersonal", idPersonal));
                     await sql.OpenAsync();
                     await cmd.ExecuteNonQueryAsync();
                     return;

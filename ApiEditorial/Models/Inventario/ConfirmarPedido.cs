@@ -9,6 +9,7 @@ namespace ApiEditorial.Models.Inventario
     {
         public int IdPedido { get; set; }
         public string Estado { get; set; }
+
         public List<ConfirmarDetallePedido> ConfirmarDetallePedido { get; set; }
         public ConfirmarPedido()
         {
@@ -22,5 +23,6 @@ namespace ApiEditorial.Models.Inventario
         public int idDetallePedido { get; set; }
         public int idLibro { get; set; }
         public int cantidadRecibida { get; set; }
+        public int idPersonal { get; set; }
     }
 }

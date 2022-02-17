@@ -8,7 +8,7 @@ namespace ApiEditorial.Models.Inventario
     public class ExistenciaText
     {
         public int IdExistenciaTex { get; set; }
-        public int IdPersonal{ get; set; }
+        public int IdPersonal { get; set; }
         public int IdLibros { get; set; }
         public string NombreDescripcion { get; set; }
         public int LibrosRecibidos { get; set; }

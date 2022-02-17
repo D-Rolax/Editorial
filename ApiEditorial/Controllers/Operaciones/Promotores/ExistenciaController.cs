@@ -21,20 +21,20 @@ namespace ApiEditorial.Controllers.Inventario
         {
             this.repository = repository ?? throw new ArgumentException(nameof(repository));
         }
-        [HttpPost]
-        public async Task post([FromBody] Personal personal)
-        {
-            await repository.NuevaExistencia(personal);
-        }
+        //[HttpPost]
+        //public async Task post([FromBody] Personal personal)
+        //{
+        //    await repository.NuevaExistencia(personal);
+        //}
 
         [HttpPost]
-        [Route("RegistrarPedidos")]
-        public async Task RegistrarPedidos([FromBody] Pedidos pedidos)
+        //[Route("RegistrarPedidos")]
+        public async Task Post([FromBody] Pedidos pedidos)
         {
             await repository.Pedidos(pedidos);
         }
         [HttpGet("{Id}")]
-        public async Task<List<ExistenciaText>>Mostrar(int Id)
+        public async Task<List<ExistenciaText>> Mostrar(int Id)
         {
             var response = await repository.MostrarExistencia(Id);
             if (response == null) { NotFound(); }
