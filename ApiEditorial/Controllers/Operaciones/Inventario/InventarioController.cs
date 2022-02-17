@@ -24,6 +24,9 @@ namespace ApiEditorial.Controllers.Inventario
         public async Task Post([FromBody] Inicial valor)
         {
             await _repository.Insert(valor);
+
+            string a = "await _repository.Insert(valor)";
+
         }
     }
 }
