@@ -69,6 +69,8 @@ namespace ApiEditorial.Data.Inventario
                 IdLibros = (int)reader["IdLibros"],
                 NombreDescripcion = reader["NombreDescripcion"].ToString(),
                 PrecioM=(decimal)reader["PrecioM"],
+                PrecioU = (decimal)reader["PrecioU"],
+                PrecioR = (decimal)reader["PrecioR"],
                 LibrosRecibidos = (int)reader["LibrosRecibidos"],
                 LibrosDevueltos = (int)reader["LibrosDevueltos"],
                 LibrosGuias = (int)reader["LibrosGuias"],
