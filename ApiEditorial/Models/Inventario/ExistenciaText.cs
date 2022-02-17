@@ -11,6 +11,7 @@ namespace ApiEditorial.Models.Inventario
         public int IdPersonal { get; set; }
         public int IdLibros { get; set; }
         public string NombreDescripcion { get; set; }
+        public decimal PrecioM { get; set; }
         public int LibrosRecibidos { get; set; }
         public int LibrosDevueltos { get; set; }
         public int LibrosGuias { get; set; }
