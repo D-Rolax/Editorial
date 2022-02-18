@@ -17,7 +17,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
         {
             _connectionString = configuration.GetConnectionString("cn");
         }
-        public async Task Insert(Contrato contrato,Cliente cliente,Colegio colegio)
+        public async Task Insert(Contrato contrato)
         {
             using(SqlConnection sql =new SqlConnection(_connectionString))
             {
@@ -33,12 +33,13 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                         cmd.Parameters.Add(new SqlParameter("TotalTextos", contrato.TotalTextos));
                         cmd.Parameters.Add(new SqlParameter("TotalDeuda", contrato.TotalDeuda));
                         cmd.Parameters.Add(new SqlParameter("Estado", contrato.Estado));
-                        cmd.Parameters.Add(new SqlParameter("NombreCompleto", cliente.NombreCompleto));
-                        cmd.Parameters.Add(new SqlParameter("Celular", cliente.Celular));
-                        cmd.Parameters.Add(new SqlParameter("Ci", cliente.Ci));
-                        cmd.Parameters.Add(new SqlParameter("IdColegio", colegio.IdColegio));
-                        cmd.Parameters.Add(new SqlParameter("Nombre", colegio.Nombre));
-                        cmd.Parameters.Add(new SqlParameter("Zona", colegio.Zona));
+                        cmd.Parameters.Add(new SqlParameter("LibroGuia", contrato.LibroGuia));
+                        cmd.Parameters.Add(new SqlParameter("NombreCompleto", contrato.NombreCompleto));
+                        cmd.Parameters.Add(new SqlParameter("Celular", contrato.Celular));
+                        cmd.Parameters.Add(new SqlParameter("Ci", contrato.Ci));
+                        cmd.Parameters.Add(new SqlParameter("IdColegio", contrato.IdColegio));
+                        cmd.Parameters.Add(new SqlParameter("Nombre", contrato.Nombre));
+                        cmd.Parameters.Add(new SqlParameter("Zona", contrato.Zona));
                         await sql.OpenAsync();
                         await cmd.ExecuteNonQueryAsync();
                         result = 1;
@@ -57,7 +58,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                             }
                             else
                             {
-                                foreach (var item in valor.DetalleTextos)
+                                foreach (var item in contrato.DetalleTextos)
                                 {
                                     await insertDetalleTexto(item.IdLibros, item.Cantidad, item.Precio, item.Observaciones);
                                 }

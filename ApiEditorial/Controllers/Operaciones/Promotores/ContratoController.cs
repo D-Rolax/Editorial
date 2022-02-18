@@ -14,17 +14,13 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
     public class ContratoController : ControllerBase
     {
         private readonly ContratoRepository _repository;
-        private readonly ClienteRepository _cliente;
-        private readonly ColegioRepository _colegio;
 
-        public ContratoController(ContratoRepository repository, ClienteRepository cliente,ColegioRepository colegio)
+        public ContratoController(ContratoRepository repository)
         {
             _repository = repository ?? throw new ArgumentException(nameof(repository));
-            _cliente = cliente ?? throw new ArgumentException(nameof(cliente));
-            _colegio = colegio ?? throw new ArgumentException(nameof(colegio));
         }
         [HttpPost]
-        public async Task InsertContrato(Contrato contrato,Cliente cliente)
+        public async Task InsertContrato(Contrato contrato)
         {
             await _repository.Insert(contrato);
         }
