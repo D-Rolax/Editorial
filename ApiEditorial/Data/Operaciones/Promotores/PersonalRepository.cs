@@ -34,39 +34,6 @@ namespace ApiEditorial.Data.Usuarios
                 }
             }
         }
-        public async Task<List<Cliente>> MostrarCliente()
-        {
-            using(SqlConnection sql = new SqlConnection(_connectionString))
-            {
-                using (SqlCommand cmd= new SqlCommand("sp_mostrar_cliente", sql))
-                {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    var response = new List<Cliente>();
-                    await sql.OpenAsync();
-                    using(var reader =await cmd.ExecuteReaderAsync())
-                    {
-                        while(await reader.ReadAsync())
-                        {
-                            response.Add(ListaCliente(reader));
-                        }
-                    }
-                    return response;
-                }
-            }
-        }
-
-        private Cliente ListaCliente(SqlDataReader reader)
-        {
-            return new Cliente()
-            {
-                IdCliente = (int)reader["IdCliente"],
-                NombreCompleto = reader["NombreCompleto"].ToString(),
-                IdColegio = (int)reader["IdColegio"],
-                Colegio = reader["Colegio"].ToString(), 
-                Zona = reader["Zona"].ToString(),
-                Asugnatura = reader["Asignatura"].ToString(),
-                Celular = (int)reader["Celular"],
-            };
-        }
+   
     }
 }

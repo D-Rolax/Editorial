@@ -11,11 +11,13 @@ namespace ApiEditorial.Data.Operaciones.Promotores
     public class ContratoRepository
     {
         private readonly string _connectionString;
+     
+
         public ContratoRepository(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("cn");
         }
-        public async Task Insert(Contrato valor)
+        public async Task Insert(Contrato contrato,Cliente cliente,Colegio colegio)
         {
             using(SqlConnection sql =new SqlConnection(_connectionString))
             {
@@ -25,26 +27,32 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     using (SqlCommand cmd = new SqlCommand("sp_nuevo_Contrato", sql))
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                        cmd.Parameters.Add(new SqlParameter("IdCliente", valor.IdCliente));
-                        cmd.Parameters.Add(new SqlParameter("IdPersonal", valor.IdPersonal));
-                        cmd.Parameters.Add(new SqlParameter("NumContrato", valor.NumContrato));
-                        cmd.Parameters.Add(new SqlParameter("TotalTextos", valor.TotalTextos));
-                        cmd.Parameters.Add(new SqlParameter("TotalDeuda", valor.TotalDeuda));
-                        cmd.Parameters.Add(new SqlParameter("Estado", valor.Estado));
+                        cmd.Parameters.Add(new SqlParameter("IdCliente", contrato.IdCliente));
+                        cmd.Parameters.Add(new SqlParameter("IdPersonal", contrato.IdPersonal));
+                        cmd.Parameters.Add(new SqlParameter("NumContrato", contrato.NumContrato));
+                        cmd.Parameters.Add(new SqlParameter("TotalTextos", contrato.TotalTextos));
+                        cmd.Parameters.Add(new SqlParameter("TotalDeuda", contrato.TotalDeuda));
+                        cmd.Parameters.Add(new SqlParameter("Estado", contrato.Estado));
+                        cmd.Parameters.Add(new SqlParameter("NombreCompleto", cliente.NombreCompleto));
+                        cmd.Parameters.Add(new SqlParameter("Celular", cliente.Celular));
+                        cmd.Parameters.Add(new SqlParameter("Ci", cliente.Ci));
+                        cmd.Parameters.Add(new SqlParameter("IdColegio", colegio.IdColegio));
+                        cmd.Parameters.Add(new SqlParameter("Nombre", colegio.Nombre));
+                        cmd.Parameters.Add(new SqlParameter("Zona", colegio.Zona));
                         await sql.OpenAsync();
                         await cmd.ExecuteNonQueryAsync();
                         result = 1;
                     }
                     if (result==1)
                     {
-                        if (valor.DetalleTextos!= null)
+                        if (contrato.DetalleTextos!= null)
                         {
-                            if (valor.Estado=="Entregado")
+                            if (contrato.Estado=="Entregado")
                             {
-                                foreach (var item in valor.DetalleTextos)
+                                foreach (var item in contrato.DetalleTextos)
                                 {
                                     await insertDetalleTexto(item.IdLibros, item.Cantidad, item.Precio, item.Observaciones);
-                                    await ConfirmarContrato(valor.IdPersonal, item.IdLibros, item.Cantidad);
+                                    await ConfirmarContrato(contrato.IdPersonal, item.IdLibros, item.Cantidad);
                                 }
                             }
                             else

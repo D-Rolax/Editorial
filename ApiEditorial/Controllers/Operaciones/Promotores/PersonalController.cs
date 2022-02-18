@@ -24,10 +24,6 @@ namespace ApiEditorial.Controllers.Usuarios
         {
             await repository.Insert(personal);
         }
-        [HttpGet]
-        public async Task<List<Cliente>>Get()
-        {
-            return await repository.MostrarCliente();
-        }
+
     }
 }

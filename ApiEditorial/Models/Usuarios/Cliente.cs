@@ -12,10 +12,11 @@ namespace ApiEditorial.Models.Usuarios
         public int IdColegio { get; set; }
         public string Colegio { get; set; }
         public string Zona{ get; set; }
-        public string Asugnatura { get; set; }
+        public string Asignatura { get; set; }
         public int Celular { get; set; }
         public string Comentario { get; set; }
         public DateTime Fecha { get; set; }
         public bool Estado { get; set; }
+        public int Ci { get; set; }
     }
 }

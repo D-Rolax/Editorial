@@ -10,6 +10,11 @@ namespace ApiEditorial.Models.Usuarios
         public int IdColegio { get; set; }
         public string Municipio { get; set; }
         public string Zona { get; set; }
-        public int MyProperty { get; set; }
+        public string Nombre { get; set; }
+        public string Direccion { get; set; }
+        public string NivelesAtencion { get; set; }
+        public string Tipo { get; set; }
+        public string Turno { get; set; }
+        public bool Estado { get; set; }
     }
 }
