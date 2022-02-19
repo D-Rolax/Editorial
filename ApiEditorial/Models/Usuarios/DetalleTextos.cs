@@ -9,6 +9,7 @@ namespace ApiEditorial.Models
     {
         public int IdContrato { get; set; }
         public int IdLibros { get; set; }
+        public string Nombre { get; set; }
         public int IdDevolucion { get; set; }
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }

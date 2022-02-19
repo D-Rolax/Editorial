@@ -130,33 +130,63 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 }
             }
         }
+        public async Task<List<DetalleTextos>> MostrarDetalle(int Id)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_mostrar_detalle_contrato", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdContrato", Id));
+                    var response = new List<DetalleTextos>();
+                    await sql.OpenAsync();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            response.Add(ListaDetalle(reader));
+                        }
+                    }
+                    return response;
+                }
+            }
+        }
 
         private Contrato ListaContrato(SqlDataReader reader)
         {
             return new Contrato()
             {
-                idContrato=(int)reader["IdContrato"],
-                NumContrato=(int)reader["NumContrato"],
-                Fecha=(DateTime)reader["Fecha"],
-                IdCliente=(int)reader["IdCliente"],
-                NombreCompleto=reader["NombreCompleto"].ToString(),
-                Celular=reader["Celular"].ToString(),
-                Ci=reader["Ci"].ToString(),
-                IdColegio=(int)reader["IdColegio"],
-                Nombre=reader["Nombre"].ToString(),
-                Zona=reader["Zona"].ToString(),
-                TotalTextos=(int)reader["TotalTextos"],
-                TotalDeuda=(decimal)reader["TotalDeuda"],
-                Saldo=(decimal)reader["Saldo"],
-                Estado=reader["Estado"].ToString(),
-                LibroGuia=(int)reader["LibroGuia"],
+                idContrato = (int)reader["IdContrato"],
+                NumContrato = (int)reader["NumContrato"],
+                Fecha = (DateTime)reader["Fecha"],
+                IdCliente = (int)reader["IdCliente"],
+                NombreCompleto = reader["NombreCompleto"].ToString(),
+                Celular = reader["Celular"].ToString(),
+                Ci = reader["Ci"].ToString(),
+                IdColegio = (int)reader["IdColegio"],
+                Nombre = reader["Nombre"].ToString(),
+                Zona = reader["Zona"].ToString(),
+                TotalTextos = (int)reader["TotalTextos"],
+                TotalDeuda = (decimal)reader["TotalDeuda"],
+                Saldo = (decimal)reader["Saldo"],
+                Estado = reader["Estado"].ToString(),
+                LibroGuia = (int)reader["LibroGuia"],
+                DetalleTextos =  new List<DetalleTextos>()
+                {
+                    
+                }
             };
         }
         private DetalleTextos ListaDetalle(SqlDataReader reader)
         {
             return new DetalleTextos()
             {
-
+                IdContrato=(int)reader["IdContrato"],
+                IdLibros=(int)reader["IdLibros"],
+                Nombre=reader["Nombre"].ToString(),
+                Cantidad=(int)reader["Cantidad"],
+                Precio=(decimal)reader["Precio"],
+                LibroGuia=(int)reader["LibroGuia"]
             };
         }
     }

@@ -1,4 +1,5 @@
 ﻿using ApiEditorial.Data.Operaciones.Promotores;
+using ApiEditorial.Models;
 using ApiEditorial.Models.Usuarios;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -28,6 +29,12 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
         public async Task<List<Contrato>>get(int Id)
         {
             return await _repository.Mostrar(Id);
+        }
+        [HttpGet]
+        [Route("Detalle/{Id}")]
+        public async Task<List<DetalleTextos>> getDetall(int Id)
+        {
+            return await _repository.MostrarDetalle(Id);
         }
     }
 }
