@@ -12,6 +12,6 @@ namespace ApiEditorial.Models
         public int IdDevolucion { get; set; }
         public int Cantidad { get; set; }
         public decimal Precio { get; set; }
-        public string Observaciones { get; set; }
+        public int LibroGuia{ get; set; }
     }
 }

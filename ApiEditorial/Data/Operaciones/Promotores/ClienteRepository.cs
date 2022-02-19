@@ -44,12 +44,12 @@ namespace ApiEditorial.Data.Operaciones.Promotores
             {
                 IdCliente = (int)reader["IdCliente"],
                 NombreCompleto = reader["NombreCompleto"].ToString(),
-                Ci = (int)reader["Ci"],
+                Ci = reader["Ci"].ToString(),
                 IdColegio = (int)reader["IdColegio"],
                 Colegio = reader["Colegio"].ToString(),
                 Zona = reader["Zona"].ToString(),
                 Asignatura = reader["Asignatura"].ToString(),
-                Celular = (int)reader["Celular"],
+                Celular = reader["Celular"].ToString(),
             };
         }
         public async Task Insertar(Cliente cliente)

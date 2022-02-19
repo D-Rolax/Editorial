@@ -24,5 +24,10 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
         {
             await _repository.Insert(contrato);
         }
+        [HttpGet("{Id}")]
+        public async Task<List<Contrato>>get(int Id)
+        {
+            return await _repository.Mostrar(Id);
+        }
     }
 }
