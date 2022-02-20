@@ -116,7 +116,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 using(SqlCommand cmd =new SqlCommand("sp_mostrar_contrato",sql))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("IdContrato", Id));
+                    cmd.Parameters.Add(new SqlParameter("@idPersona", Id));
                     var response = new List<Contrato>();
                     await sql.OpenAsync();
                     using(var reader=await cmd.ExecuteReaderAsync())
@@ -154,6 +154,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
 
         private Contrato ListaContrato(SqlDataReader reader)
         {
+            var Detalle = new List<DetalleTextos>();
             return new Contrato()
             {
                 idContrato = (int)reader["IdContrato"],
@@ -163,8 +164,14 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 NombreCompleto = reader["NombreCompleto"].ToString(),
                 Celular = reader["Celular"].ToString(),
                 Ci = reader["Ci"].ToString(),
+                Asignatura=reader["Asignatura"].ToString(),
                 IdColegio = (int)reader["IdColegio"],
                 Nombre = reader["Nombre"].ToString(),
+                Municipio=reader["Municipio"].ToString(),
+                Direccion=reader["Direccion"].ToString(),
+                NivelesAtencion=reader["NivelesAtencion"],
+                Tipo=reader["Tipo"].ToString(),
+                Turno=reader["Turno"].ToString(),
                 Zona = reader["Zona"].ToString(),
                 TotalTextos = (int)reader["TotalTextos"],
                 TotalDeuda = (decimal)reader["TotalDeuda"],
@@ -173,7 +180,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 LibroGuia = (int)reader["LibroGuia"],
                 IdPersonal = (int)reader["IdPersonal"],
                 NombrePersonal = reader["NombrePersonal"].ToString(),
-                DetalleTextos = new List<DetalleTextos>()
+                DetalleTextos = new List<DetalleTextos>
                 {
                     
                 }

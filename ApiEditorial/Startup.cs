@@ -41,8 +41,6 @@ namespace ApiEditorial
             services.AddScoped<ContratoRepository>();
             services.AddScoped<ClienteRepository>();
             services.AddScoped<ColegioRepository>();
-
-
                 services.AddCors(options =>
                 {
                     options.AddPolicy(name: MiCors,

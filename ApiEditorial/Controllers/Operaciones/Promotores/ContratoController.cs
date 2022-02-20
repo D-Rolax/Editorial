@@ -25,13 +25,14 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
         {
             await _repository.Insert(contrato);
         }
-        [HttpGet("{Id}")]
+        [HttpGet]
+        [Route("Contrato/{Id}")]
         public async Task<List<Contrato>>get(int Id)
         {
             return await _repository.Mostrar(Id);
         }
         [HttpGet]
-        [Route("{Id}/Detalle")]
+        [Route("Detalle/{Id}")]
         public async Task<List<DetalleTextos>> getDetall(int Id)
         {
             return await _repository.MostrarDetalle(Id);

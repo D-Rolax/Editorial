@@ -24,6 +24,12 @@ namespace ApiEditorial.Models.Usuarios
         public string Ci { get; set; }
         public int IdColegio { get; set; }
         public string Zona { get; set; }
-        public List<DetalleTextos> DetalleTextos{ get; set; }
+        public string Asignatura { get; internal set; }
+        public string Municipio { get; internal set; }
+        public string Direccion { get; internal set; }
+        public object NivelesAtencion { get; internal set; }
+        public string Tipo { get; internal set; }
+        public string Turno { get; internal set; }
+        public List<DetalleTextos> DetalleTextos { get; set; }
     }
 }
