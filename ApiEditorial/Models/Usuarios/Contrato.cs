@@ -12,6 +12,7 @@ namespace ApiEditorial.Models.Usuarios
         public DateTime Fecha { get; set; }
         public int IdCliente { get; set; }
         public int IdPersonal { get; set; }
+        public string NombrePersonal { get; set; }
         public int TotalTextos { get; set; }
         public decimal TotalDeuda { get; set; }
         public decimal Saldo { get; set; }

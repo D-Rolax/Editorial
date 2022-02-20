@@ -31,10 +31,16 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
             return await _repository.Mostrar(Id);
         }
         [HttpGet]
-        [Route("Detalle/{Id}")]
+        [Route("{Id}/Detalle")]
         public async Task<List<DetalleTextos>> getDetall(int Id)
         {
             return await _repository.MostrarDetalle(Id);
+        }
+        [HttpGet]
+        [Route("NumContrato")]
+        public async Task<List<Contrato>> GetNumCon()
+        {
+            return await _repository.VerContrato();
         }
     }
 }

@@ -116,7 +116,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 using(SqlCommand cmd =new SqlCommand("sp_mostrar_contrato",sql))
                 {
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    cmd.Parameters.Add(new SqlParameter("IdPErsonal", Id));
+                    cmd.Parameters.Add(new SqlParameter("IdContrato", Id));
                     var response = new List<Contrato>();
                     await sql.OpenAsync();
                     using(var reader=await cmd.ExecuteReaderAsync())
@@ -171,12 +171,15 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 Saldo = (decimal)reader["Saldo"],
                 Estado = reader["Estado"].ToString(),
                 LibroGuia = (int)reader["LibroGuia"],
-                DetalleTextos =  new List<DetalleTextos>()
+                IdPersonal = (int)reader["IdPersonal"],
+                NombrePersonal = reader["NombrePersonal"].ToString(),
+                DetalleTextos = new List<DetalleTextos>()
                 {
                     
                 }
             };
         }
+
         private DetalleTextos ListaDetalle(SqlDataReader reader)
         {
             return new DetalleTextos()
@@ -187,6 +190,34 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 Cantidad=(int)reader["Cantidad"],
                 Precio=(decimal)reader["Precio"],
                 LibroGuia=(int)reader["LibroGuia"]
+            };
+        }
+        public async Task<List<Contrato>> VerContrato()
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_ver_NumComtrato", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    var response = new List<Contrato>();
+                    await sql.OpenAsync();
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            response.Add(ListaNumContrato(reader));
+                        }
+                    }
+                    return response;
+                }
+            }
+        }
+
+        private Contrato ListaNumContrato(SqlDataReader reader)
+        {
+            return new Contrato()
+            {
+                NumContrato = (int)reader["NumContrato"]
             };
         }
     }
