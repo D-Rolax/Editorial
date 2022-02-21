@@ -93,6 +93,21 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 }
             }
         }
+        private async Task ActualizarDetalleTexto(int idDetalle, int cantidad)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("spActualizarDetalleTextos", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdDetalle", idDetalle));
+                    cmd.Parameters.Add(new SqlParameter("Cantidad", cantidad));
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    return;
+                }
+            }
+        }
         private async Task ConfirmarContrato(int idPersonal,int idLibro,int cantidad)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
@@ -111,10 +126,11 @@ namespace ApiEditorial.Data.Operaciones.Promotores
         }
         public async Task<List<Contrato>> Mostrar(int Id)
         {
-            using(SqlConnection sql=new SqlConnection(_connectionString))
+            using (SqlConnection sql=new SqlConnection(_connectionString))
             {
                 using(SqlCommand cmd =new SqlCommand("sp_mostrar_contrato",sql))
                 {
+                    
                     cmd.CommandType = System.Data.CommandType.StoredProcedure;
                     cmd.Parameters.Add(new SqlParameter("@idPersona", Id));
                     var response = new List<Contrato>();
@@ -123,7 +139,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     {
                         while (await reader.ReadAsync())
                         {
-                            response.Add(ListaContrato(reader));
+                            response.Add(ListaContrato(reader));              
                         }
                     }
                     return response;
@@ -151,10 +167,10 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 }
             }
         }
-
+       
         private Contrato ListaContrato(SqlDataReader reader)
         {
-            var Detalle = new List<DetalleTextos>();
+            var Detalle1 = new List<DetalleTextos>();
             return new Contrato()
             {
                 idContrato = (int)reader["IdContrato"],
@@ -164,14 +180,14 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 NombreCompleto = reader["NombreCompleto"].ToString(),
                 Celular = reader["Celular"].ToString(),
                 Ci = reader["Ci"].ToString(),
-                Asignatura=reader["Asignatura"].ToString(),
+                Asignatura = reader["Asignatura"].ToString(),
                 IdColegio = (int)reader["IdColegio"],
                 Nombre = reader["Nombre"].ToString(),
-                Municipio=reader["Municipio"].ToString(),
-                Direccion=reader["Direccion"].ToString(),
-                NivelesAtencion=reader["NivelesAtencion"],
-                Tipo=reader["Tipo"].ToString(),
-                Turno=reader["Turno"].ToString(),
+                Municipio = reader["Municipio"].ToString(),
+                Direccion = reader["Direccion"].ToString(),
+                NivelesAtencion = reader["NivelesAtencion"],
+                Tipo = reader["Tipo"].ToString(),
+                Turno = reader["Turno"].ToString(),
                 Zona = reader["Zona"].ToString(),
                 TotalTextos = (int)reader["TotalTextos"],
                 TotalDeuda = (decimal)reader["TotalDeuda"],
@@ -180,10 +196,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 LibroGuia = (int)reader["LibroGuia"],
                 IdPersonal = (int)reader["IdPersonal"],
                 NombrePersonal = reader["NombrePersonal"].ToString(),
-                DetalleTextos = new List<DetalleTextos>
-                {
-                    
-                }
+                DetalleTextos = Detalle1
             };
         }
 
@@ -226,6 +239,43 @@ namespace ApiEditorial.Data.Operaciones.Promotores
             {
                 NumContrato = (int)reader["NumContrato"]
             };
+        }
+        public async Task Update(Contrato contrato)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                try
+                {
+                    int result = 0;
+                    using (SqlCommand cmd = new SqlCommand("spCambiarEstadoContrato", sql))
+                    {
+                        cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                        cmd.Parameters.Add(new SqlParameter("IdContrato", contrato.idContrato));
+                        cmd.Parameters.Add(new SqlParameter("Estado", contrato.Estado));
+                        cmd.Parameters.Add(new SqlParameter("IdPersonal", contrato.IdPersonal));
+                        await sql.OpenAsync();
+                        await cmd.ExecuteNonQueryAsync();
+                        result = 1;
+                    }
+                    if (result == 1)
+                    {
+                        if (contrato.DetalleTextos != null)
+                        {
+                            foreach (var item in contrato.DetalleTextos)
+                            {
+                                await ActualizarDetalleTexto(item.IdDetalle,item.Cantidad);
+                                await ConfirmarContrato(contrato.IdPersonal, item.IdLibros, item.Cantidad);
+                            }
+                        }
+                    }
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+
+            }
         }
     }
 }

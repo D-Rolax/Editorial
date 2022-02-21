@@ -43,5 +43,10 @@ namespace ApiEditorial.Controllers.Operaciones.Promotores
         {
             return await _repository.VerContrato();
         }
+        [HttpPut]
+        public async Task Put(Contrato contrato)
+        {
+            await _repository.Update(contrato);
+        }
     }
 }
