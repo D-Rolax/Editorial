@@ -108,7 +108,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 }
             }
         }
-        private async Task ConfirmarContrato(int idPersonal,int idLibro,int cantidad)
+        private async Task ConfirmarContrato(int     idPersonal,int idLibro,int cantidad)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {

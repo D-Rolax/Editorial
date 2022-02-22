@@ -15,6 +15,7 @@ using ApiEditorial.Data;
 using ApiEditorial.Data.Inventario;
 using ApiEditorial.Data.Usuarios;
 using ApiEditorial.Data.Operaciones.Promotores;
+using ApiEditorial.Data.Operaciones.Caja;
 
 namespace ApiEditorial
 {
@@ -42,6 +43,8 @@ namespace ApiEditorial
             services.AddScoped<ClienteRepository>();
             services.AddScoped<ColegioRepository>();
             services.AddScoped<PruebaRepository>();
+            services.AddScoped<AmortizacionRepository>();
+            services.AddScoped<VentasRepository>();
                 services.AddCors(options =>
                 {
                     options.AddPolicy(name: MiCors,

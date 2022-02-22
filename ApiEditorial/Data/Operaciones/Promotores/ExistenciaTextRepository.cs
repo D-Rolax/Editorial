@@ -17,10 +17,6 @@ namespace ApiEditorial.Data.Inventario
         {
             _connectionString = configuration.GetConnectionString("cn");
         }
-        public async Task NuevaExistencia(Personal personal)
-        {
-            
-        }
         public async Task InsertarExistencia(int IdLibros,int IdPersonal,int TotalLibrosEntregados)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
