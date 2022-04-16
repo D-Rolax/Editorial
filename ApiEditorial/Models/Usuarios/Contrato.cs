@@ -30,6 +30,6 @@ namespace ApiEditorial.Models.Usuarios
         public object NivelesAtencion { get; internal set; }
         public string Tipo { get; internal set; }
         public string Turno { get; internal set; }
-        public List<DetalleTextos> DetalleTextos { get; set; }
+        public List<DetalleTextos> DetalleTexto { get; set; }
     }
 }

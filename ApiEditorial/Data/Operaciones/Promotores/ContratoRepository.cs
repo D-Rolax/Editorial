@@ -47,11 +47,11 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     }
                     if (result==1)
                     {
-                        if (contrato.DetalleTextos!= null)
+                        if (contrato.DetalleTexto!= null)
                         {
                             if (contrato.Estado=="Entregado")
                             {
-                                foreach (var item in contrato.DetalleTextos)
+                                foreach (var item in contrato.DetalleTexto)
                                 {
                                     await insertDetalleTexto(item.IdLibros, item.Cantidad, item.Precio, item.LibroGuia);
                                     await ConfirmarContrato(contrato.IdPersonal, item.IdLibros, item.Cantidad);
@@ -59,7 +59,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                             }
                             else
                             {
-                                foreach (var item in contrato.DetalleTextos)
+                                foreach (var item in contrato.DetalleTexto)
                                 {
                                     await insertDetalleTexto(item.IdLibros, item.Cantidad, item.Precio, item.LibroGuia);
                                 }
@@ -108,7 +108,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 }
             }
         }
-        private async Task ConfirmarContrato(int     idPersonal,int idLibro,int cantidad)
+        private async Task ConfirmarContrato(int idPersonal,int idLibro,int cantidad)
         {
             using (SqlConnection sql = new SqlConnection(_connectionString))
             {
@@ -139,7 +139,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     {
                         while (await reader.ReadAsync())
                         {
-                            response.Add(ListaContrato(reader));              
+                            response.Add(ListaContrato(reader)); 
                         }
                     }
                     return response;
@@ -170,7 +170,6 @@ namespace ApiEditorial.Data.Operaciones.Promotores
        
         private Contrato ListaContrato(SqlDataReader reader)
         {
-            var Detalle1 = new List<DetalleTextos>();
             return new Contrato()
             {
                 idContrato = (int)reader["IdContrato"],
@@ -196,7 +195,10 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                 LibroGuia = (int)reader["LibroGuia"],
                 IdPersonal = (int)reader["IdPersonal"],
                 NombrePersonal = reader["NombrePersonal"].ToString(),
-                DetalleTextos = Detalle1
+                DetalleTexto = new List<DetalleTextos>()
+                {
+                    
+                }
             };
         }
 
@@ -259,9 +261,9 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                     }
                     if (result == 1)
                     {
-                        if (contrato.DetalleTextos != null)
+                        if (contrato.DetalleTexto != null)
                         {
-                            foreach (var item in contrato.DetalleTextos)
+                            foreach (var item in contrato.DetalleTexto)
                             {
                                 await ActualizarDetalleTexto(item.IdDetalle,item.Cantidad);
                                 await ConfirmarContrato(contrato.IdPersonal, item.IdLibros, item.Cantidad);
@@ -269,7 +271,7 @@ namespace ApiEditorial.Data.Operaciones.Promotores
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception )
                 {
 
                     throw;
