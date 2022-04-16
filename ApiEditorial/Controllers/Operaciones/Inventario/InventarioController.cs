@@ -31,5 +31,10 @@ namespace ApiEditorial.Controllers.Inventario
         {
             return await _repository.GetAll();
         }
+        [HttpPut]
+        public async Task Put([FromBody] ExistenciaAlm valor)
+        {
+            await _repository.Ajustes(valor);
+        }
     }
 }

@@ -110,5 +110,20 @@ namespace ApiEditorial.Data.Inventario
                 TotalAlmacen = (int)reader["TotalAlmacen"]
             };
         }
+        public async Task Ajustes(ExistenciaAlm existencia)
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_Actualizar_stock", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdExistenciaAlm", existencia.IdExistenciaAlm));
+                    cmd.Parameters.Add(new SqlParameter("TotalAlmacen", existencia.TotalAlmacen));
+                    await sql.OpenAsync();
+                    await cmd.ExecuteNonQueryAsync();
+                    return;
+                }
+            }
+        }
     }
 }
