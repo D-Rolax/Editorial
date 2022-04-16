@@ -1,4 +1,5 @@
-﻿using ApiEditorial.Models.Inventario;
+﻿using ApiEditorial.Models;
+using ApiEditorial.Models.Inventario;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -71,6 +72,43 @@ namespace ApiEditorial.Data.Inventario
                 }
             }
         }
-    
+        public async Task<List<Libros>> GetAll()
+        {
+            using (SqlConnection sql = new SqlConnection(_connectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_iniciar_libros", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    var response = new List<Libros>();
+                    await sql.OpenAsync();
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            response.Add(MapToValue(reader));
+                        }
+                    }
+                    return response;
+                }
+            }
+        }
+
+        private Libros MapToValue(SqlDataReader reader)
+        {
+            return new Libros()
+            {
+                IdLibros = (int)reader["IdLibros"],
+                Nombre = reader["Nombre"].ToString(),
+                Nivel = reader["Nivel"].ToString(),
+                PrecioU = (decimal)reader["PrecioU"],
+                PrecioM = (decimal)reader["PrecioM"],
+                PrecioR = (decimal)reader["PrecioR"],
+                Descripcion = reader["Descripcion"].ToString(),
+                FechaRegistro = (DateTime)reader["FechaRegistro"],
+                Estado = (bool)reader["Estado"],
+                TotalAlmacen = (int)reader["TotalAlmacen"]
+            };
+        }
     }
 }

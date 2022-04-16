@@ -1,4 +1,5 @@
 ﻿using ApiEditorial.Data.Inventario;
+using ApiEditorial.Models;
 using ApiEditorial.Models.Inventario;
 using ApiEditorial.Servicios;
 using Microsoft.AspNetCore.Http;
@@ -24,6 +25,11 @@ namespace ApiEditorial.Controllers.Inventario
         public async Task Post([FromBody] Inicial valor)
         {
             await _repository.Insert(valor);
+        }
+        [HttpGet]
+        public async Task<List<Libros>> Get()
+        {
+            return await _repository.GetAll();
         }
     }
 }
