@@ -27,12 +27,12 @@ namespace ApiEditorial.Data.Operaciones.Caja
                     {
                         cmd.CommandType = System.Data.CommandType.StoredProcedure;
                         cmd.Parameters.Add(new SqlParameter("IdCliente", values.IdCliente));
-                        cmd.Parameters.Add(new SqlParameter("IdPersonal", values.IdPersonal));
-                        cmd.Parameters.Add(new SqlParameter("NroRecibo", values.NroRecibo));
+                        cmd.Parameters.Add(new SqlParameter("IdUsuario", values.IdUsuario));
                         cmd.Parameters.Add(new SqlParameter("Cantidad", values.Cantidad));
                         cmd.Parameters.Add(new SqlParameter("LibroGuia", values.LibroGuia));
                         cmd.Parameters.Add(new SqlParameter("Total", values.Total));
-                        cmd.Parameters.Add(new SqlParameter("Descripcion", values.Descripcion));
+                        cmd.Parameters.Add(new SqlParameter("NombreAlumno", values.NombreAlumno));
+                        cmd.Parameters.Add(new SqlParameter("IdComision", values.IdComision));
                         await sql.OpenAsync();
                         await cmd.ExecuteNonQueryAsync();
                         result = 1;
@@ -43,7 +43,7 @@ namespace ApiEditorial.Data.Operaciones.Caja
                         {
                             foreach (var item in values.DetalleVentas)
                             {
-                                await InsertDetalle(item.IdLibro, item.Cantidad, item.Precio, item.SubTotal, values.IdPersonal);
+                                await InsertDetalle(item.IdLibro, item.Cantidad, item.Precio, item.SubTotal, values.IdCliente);
                             }
                         }
                     }
