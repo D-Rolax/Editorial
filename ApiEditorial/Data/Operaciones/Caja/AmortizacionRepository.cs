@@ -69,5 +69,73 @@ namespace ApiEditorial.Data.Operaciones.Caja
                 }
             }
         }
+        
+        public async Task<List<Amortizacion>> GetAll()
+        {
+            using (SqlConnection sql = new SqlConnection(conectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_MostrarAmortizacion", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    var response = new List<Amortizacion>();
+                    await sql.OpenAsync();
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            response.Add(MapToValue(reader));
+                        }
+                    }
+                    return response;
+                }
+            }
+        }
+
+        private Amortizacion MapToValue(SqlDataReader reader)
+        {
+            return new Amortizacion()
+            {
+                IdAmortizacion = (int)reader["IdAmortizacion"],
+                IdPersonal = (int)reader["IdPromotor"],
+                NumAmortizacion = (int)reader["NumComprobante"],
+                MontoTotal = (decimal)reader["MontoTotal"],
+                Fecha = (DateTime)reader["Fecha"],
+                Estado= (bool)reader["Estado"],
+                IdVenta = (int)reader["IdVenta"]
+            };
+        }
+        public async Task<List<DetalleAmortizacion>> GetDetalle(int IdAmortizacion)
+        {
+            using (SqlConnection sql = new SqlConnection(conectionString))
+            {
+                using (SqlCommand cmd = new SqlCommand("sp_MostrarDetalleAmortizacion", sql))
+                {
+                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
+                    cmd.Parameters.Add(new SqlParameter("IdAmortizacion", IdAmortizacion));
+                    var response = new List<DetalleAmortizacion>();
+                    await sql.OpenAsync();
+
+                    using (var reader = await cmd.ExecuteReaderAsync())
+                    {
+                        while (await reader.ReadAsync())
+                        {
+                            response.Add(ListaDetalle(reader));
+                        }
+                    }
+                    return response;
+                }
+            }
+        }
+        private DetalleAmortizacion ListaDetalle(SqlDataReader reader)
+        {
+            return new DetalleAmortizacion()
+            {
+                IdAmortizacion = (int)reader["IdAmortizacion"],
+                NumContrato = (int)reader["NumContrato"],
+                NumRecibo = (int)reader["NumRecibo"],
+                Monto = (decimal)reader["Monto"]
+            };
+        }
     }
 }

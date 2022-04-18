@@ -24,5 +24,16 @@ namespace ApiEditorial.Controllers.Operaciones.Caja
         {
             await _repository.Insert(amortizacion);
         }
+        [HttpGet]
+        public async Task<List<Amortizacion>> Get()
+        {
+            return await _repository.GetAll();
+        }
+        [HttpGet]
+        [Route("{Id}/Detalle")]
+        public async Task<List<DetalleAmortizacion>> GetDetalle(int Id)
+        {
+            return await _repository.GetDetalle(Id);
+        }
     }
 }

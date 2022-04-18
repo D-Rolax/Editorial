@@ -10,10 +10,11 @@ namespace ApiEditorial.Models.Caja
         public int IdAmortizacion { get; set; }
         public int IdPersonal { get; set; }
         public int NumAmortizacion { get; set; }
-        public int MontoTotal { get; set; }
+        public decimal MontoTotal { get; set; }
         public DateTime Fecha { get; set; }
         public DateTime FechaRegistro { get; set; }
         public bool Estado { get; set; }
+        public int IdVenta { get; set; }
         public List<DetalleAmortizacion> DetalleAmortizacion{ get; set; }
 
     }
