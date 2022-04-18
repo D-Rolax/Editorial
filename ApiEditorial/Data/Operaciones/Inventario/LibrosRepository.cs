@@ -1,4 +1,5 @@
 ﻿using ApiEditorial.Models;
+using ApiEditorial.Models.Inventario;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
@@ -36,35 +37,7 @@ namespace ApiEditorial.Data
                 }
             }
         }
-        public async Task<List<Almacen>> ListarAlmacen()
-        {
-            using (SqlConnection sql = new SqlConnection(_connectionString))
-            {
-                using (SqlCommand cmd = new SqlCommand("sp_mostrar_Almacen", sql))
-                {
-                    cmd.CommandType = System.Data.CommandType.StoredProcedure;
-                    var response = new List<Almacen>();
-                    await sql.OpenAsync();
 
-                    using (var reader = await cmd.ExecuteReaderAsync())
-                    {
-                        while (await reader.ReadAsync())
-                        {
-                            response.Add(AgregarAlmacen(reader));
-                        }
-                    }
-                    return response;
-                }
-            }
-        }
-        private Almacen AgregarAlmacen (SqlDataReader reader)
-        {
-            return new Almacen()
-            {
-                IdAlmacen = (int)reader["IdAlmacen"],
-                Nombre = reader["Nombre"].ToString(),
-            };
-        }
         private Libros MapToValue(SqlDataReader reader)
         {
             return new Libros()

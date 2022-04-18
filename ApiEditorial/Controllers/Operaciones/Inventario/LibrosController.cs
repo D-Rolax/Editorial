@@ -1,5 +1,6 @@
 ﻿using ApiEditorial.Data;
 using ApiEditorial.Models;
+using ApiEditorial.Models.Inventario;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -27,12 +28,6 @@ namespace ApiEditorial.Controllers
             return await _repository.GetAll();
         }
 
-        [HttpGet]
-        [Route("ListarAlmacen")]
-        public async Task<List<Almacen>> ListarAlmacen()
-        {
-            return await _repository.ListarAlmacen();
-        }
         [HttpPost]
         public async Task Post([FromBody] Libros libros)
         {

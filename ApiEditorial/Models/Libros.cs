@@ -19,9 +19,4 @@ namespace ApiEditorial.Models
         public bool Estado { get; set; }
 
     }
-    public class Almacen
-    {
-        public int IdAlmacen { get; set; }
-        public string Nombre { get; set; }
-    }
 }
